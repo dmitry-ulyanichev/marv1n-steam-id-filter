@@ -47,7 +47,4 @@ for (const [varName, value] of Object.entries(requiredEnvVars)) {
   }
 }
 
-// Ensure log directory exists
-fs.ensureDirSync(CONFIG.LOG_DIR);
-
 module.exports = CONFIG;
