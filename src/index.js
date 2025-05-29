@@ -1,6 +1,5 @@
 // src/index.js
 const CONFIG = require('../config/config');
-const FileManager = require('./file-manager');
 const SteamValidator = require('./steam-validator');
 const ApiService = require('./api-service');
 const QueueManager = require('./queue-manager');
@@ -35,11 +34,6 @@ async function processQueuedProfiles(steamValidator, apiService, queueManager) {
     const profile = await queueManager.getNextProcessableProfile(allConnectionsInCooldown);
     
     if (!profile) {
-      if (allConnectionsInCooldown) {
-        logger.debug('No processable profiles in queue while connections are in cooldown');
-      } else {
-        logger.debug('No processable profiles in queue');
-      }
       isProcessing = false;
       return;
     }
@@ -242,7 +236,6 @@ async function main() {
   }
   
   // Initialize components
-  const fileManager = new FileManager(CONFIG);
   const steamValidator = new SteamValidator(CONFIG);
   const apiService = new ApiService(CONFIG);
   const queueManager = new QueueManager(CONFIG);

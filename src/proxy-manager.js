@@ -7,9 +7,18 @@ const { SocksProxyAgent } = require('socks-proxy-agent');
 
 class ProxyManager {
   constructor(configDir) {
+    console.log(`[DEBUG] ProxyManager received configDir: ${configDir}`);
+    console.log(`[DEBUG] ProxyManager configDir type: ${typeof configDir}`);
+    
+    if (!configDir) {
+      throw new Error('ProxyManager: configDir parameter is required but received: ' + configDir);
+    }
+    
     this.configPath = path.join(configDir, 'config_proxies.json');
+    console.log(`[DEBUG] ProxyManager configPath: ${this.configPath}`);
+    
     this.config = null;
-    this.DEFAULT_COOLDOWN_DURATION = 21900000; // 6 hours + 5 minutes in milliseconds
+    this.DEFAULT_COOLDOWN_DURATION = 21900000;
     this.initializeConfig();
   }
 
@@ -369,8 +378,6 @@ class ProxyManager {
     const availableInfo = status.allInCooldown ? 
       `All connections in cooldown! Next available in ${Math.ceil(status.nextAvailableIn / 60000)} mins` :
       `${status.availableConnections}/${status.totalConnections} connections available`;
-    
-    logger.debug(`Connection status: ${availableInfo}, Current: ${currentConnectionInfo}`);
     
     return status;
   }
