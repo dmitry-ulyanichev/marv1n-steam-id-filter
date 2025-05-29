@@ -1,4 +1,4 @@
-// steam-id-processor/src/steam-validator.js
+// src/steam-validator.js
 const axios = require('axios');
 const fs = require('fs-extra');
 const path = require('path');
@@ -7,7 +7,7 @@ const ProxyManager = require('./proxy-manager');
 const { SocksProxyAgent } = require('socks-proxy-agent');
 
 // Load environment variables
-require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
+require('dotenv').config();
 
 class SteamValidator {
   constructor(config) {
@@ -17,9 +17,9 @@ class SteamValidator {
     this.minApiCallInterval = 1000; // 1 second between calls
     this.loadApiKey();
     
-    // Initialize the proxy manager
-    const configDir = path.dirname(path.join(__dirname, '../config'));
-    this.proxyManager = new ProxyManager(configDir);
+    // Initialize the proxy manager - use project root directory
+    const projectRoot = path.join(__dirname, '..');
+    this.proxyManager = new ProxyManager(projectRoot);
     
     // Add a property to track deferred checks
     this.deferredChecks = new Map();
